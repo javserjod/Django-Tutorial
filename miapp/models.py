@@ -13,6 +13,6 @@ class Task(models.Model):    # equivale a tabla
     title = models.CharField(max_length=200)
     description = models.TextField()
     project = models.ForeignKey(Project, on_delete=models.CASCADE)    # clave foranea. Si se borra el proyecto, se borran las tareas asociadas en cascada
-    
+    done = models.BooleanField(default=False)    # por defecto, la tarea no esta hecha
     def __str__(self):    # devuelve el titulo de la task como string
         return self.title+ " - " + self.project.name    # devuelve el titulo de la tarea y el nombre del proyecto asociado
