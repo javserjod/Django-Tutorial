@@ -38,7 +38,7 @@ def create_task(request):
     else:
         # create new task
         Task.objects.create(title=request.POST['title'], description=request.POST['description'], project_id=1)    # crea una nueva tarea con los datos del formulario
-        return redirect('/tasks/')   # redirige a la vista de tareas
+        return redirect('tasks')   # redirige a la vista de tareas
 
 def create_project(request):
     if request.method == 'GET':
@@ -49,4 +49,10 @@ def create_project(request):
         Project.objects.create(name=request.POST['name'])
         
         #show interface
-        return render(request, 'projects/create_project.html', {'form': CreateNewProjectForm})    # renderiza el template create_project.html
+        return redirect('projects')    # redirige a la vista de proyectos (usando su nombre de url)
+    
+def project_detail(request, id):
+    #project = Project.objects.get(id=id)
+    project =get_object_or_404(Project, id=id)    # devuelve un 404 si no encuentra el objeto
+    tasks = Task.objects.filter(project=id)    # devuelve todas las tareas del proyecto
+    return render(request, 'projects/detail.html', {'project':project, 'tasks':tasks})
